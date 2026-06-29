@@ -1,23 +1,42 @@
 import ServiceModule from "@iprokit/service";
-const Service=ServiceModule.default
-// Create Service
+const Service = ServiceModule.default;
 const service = new Service("DemoService");
 
-// Events
+// Home Route
+service.get("/", (req, res) => {
+    res.end("Welcome to IProKit 🚀");
+});
+
+// Get Users
+service.get("/users", (req, res) => {
+    res.end(JSON.stringify([
+        { id: 1, name: "Ritam" },
+        { id: 2, name: "Rahul" }
+    ]));
+});
+
+// Get User By ID
+service.get("/users/:id", (req, res) => {
+    res.end(`User ID: ${req.params.id}`);
+});
+
+// Create User
+service.post("/users", (req, res) => {
+    res.end("User Created Successfully");
+});
+
+// Update User
+service.put("/users/:id", (req, res) => {
+    res.end(`User ${req.params.id} Updated`);
+});
+
+// Delete User
+service.delete("/users/:id", (req, res) => {
+    res.end(`User ${req.params.id} Deleted`);
+});
+
 service.on("start", () => {
     console.log("✅ Service Started");
 });
 
-service.on("stop", () => {
-    console.log("❌ Service Stopped");
-});
-
-// Start Service
-await service.start(
-    3000,   // HTTP Port
-    6000,   // SCP Port
-    5000,   // SDP Port
-    "224.0.0.2"
-);
-
-console.log('Service is running on:3000 (HTTP), 6000 (SCP), 5000 (SDP)');
+await service.start(3000, 6000, 5000, "224.0.0.2");
